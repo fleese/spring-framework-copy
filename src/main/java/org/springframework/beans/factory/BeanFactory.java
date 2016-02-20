@@ -109,11 +109,43 @@ public interface BeanFactory {
 	<T> T getBean(String name,Class<T> requiredType)throws BeansException;
 	
 	/**
-	 * 返回符合要求类型的bean实例
+	 * 返回唯一符合要求类型的bean实例
 	 * @param requiredType 可以是实际bean类型的接口或者超类，不允许null
-	 * 该
-	 * @return
-	 * @throws BeansException
+	 * 该方法在ListableBeanFactory中可能依照类型查找，也可能依据类型的名字查找
+	 * ListableBeanFactory和BeanFactoryUtils包含了大量的bean获取方法
+	 * @return 一个唯一符合给定类型的bean的实例
+	 * @throws NoSuchBeanDefinitionException 如果不能找到对应的bean definition。
 	 */
 	<T> T getBean(Class<T> requiredType) throws BeansException;
+	
+	/**
+	 * 放回制定的Bean实例，它可能是共享的或者独立的
+	 * 允许指定构造器参数/工厂方法参数，覆盖在bean definition中的特定的默认参数（如果有的话）
+	 * @param name
+	 * @param args 用静态工厂方法创建一个原型时使用该参数。在其他情况下，如果args是非空的话，它是无效的。
+	 * @return
+	 * @throws NoSuchBeanDefinitionException 如果找不到该bean definition
+	 * @throws BeanDefinitionStoreException args为非空的，但是相关的bean不是原型模式的
+	 * @throws BeansException 如果bean不能被构建。
+	 */
+	Object getBean(String name, Object... args) throws BeansException;
+	
+	/**
+	 * 检测当前的bean factory是否包含一个给定名称地bean定义
+	 * 如果在当前Factory中无法找到对应的bean,将继续在其父Factory中寻找。
+	 * @param name
+	 * @return
+	 */
+	boolean containsBean(String name);
+	
+	/**
+	 * 指定名称的bean是否是单例的。
+	 * 注意：这方法放回false不代表这就是一个独立的原型模式的bean.
+	 * 返回false仅指示其是非单例的，其可能上下文bean(比如“request”).
+	 * 用isPrototype方法去检查是否是独立的原型模式的bean
+	 * @param name
+	 * @return
+	 * @throws NoSuchBeanDefinitionException 如果无法找到对应名称的bean
+	 */
+	boolean isSingleton(String name) throws NoSuchBeanDefinitionException;
 }
