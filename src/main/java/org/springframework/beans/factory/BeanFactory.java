@@ -189,7 +189,7 @@ public interface BeanFactory {
 	 * <p>翻译bean的别名到标准的bean名称
 	 * 如果在当前工厂实例中无法找到该bean，则在父工厂实例中继续查找
 	 * @param name 需要检查的bean的名称。
-	 * @return bean的类型，或者当不能确定bean的类型时返回<code>null</code>
+	 * @return bean的类型，或者当不能确定bean的类型时返回<code>null</code>。
 	 * @throws NoSuchBeanDefinitionException 如果用被给的bean名称无法找到对应的bean抛出
 	 */
 	Class<?> getType(String name) throws NoSuchBeanDefinitionException;
