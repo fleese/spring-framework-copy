@@ -148,4 +148,49 @@ public interface BeanFactory {
 	 * @throws NoSuchBeanDefinitionException 如果无法找到对应名称的bean
 	 */
 	boolean isSingleton(String name) throws NoSuchBeanDefinitionException;
+	
+	/**
+	 * 指定的bean是否是原型模式的？即是说，{@link #getBean}方法将总是返回一个独立的实例
+	 * 
+	 * <p>注意：该方法返回<code>false</code>不意味该bean就是单例的（singleton）.
+	 * 它仅仅表示是一个非独立的bean,可能是范围bean(例如：“request”范围内的bean).
+	 * 用{@link #isSingleton}方法去明确的检查bean是否是共享的单例bean.
+	 * <p>翻译bean的别名到标准的bean名称
+	 * 如果在当前工厂实例中无法找到该bean，则在父工厂实例中继续查找
+	 * 
+	 * @param name 去查询的bean的名称
+	 * @return
+	 * @throws NoSuchBeanDefinitionException 如果用被给的bean名称无法找到对应的bean抛出
+	 * @see #getBean
+	 * @see #isSingleton
+	 */
+	boolean isPrototype(String name) throws NoSuchBeanDefinitionException;
+
+	/**
+	 * 检查指定的bean（由参数name指定）符合给定的类型。
+	 * 具体来说，就是检查{@link #getBean} 方法通过bean名称返回的bean实例
+	 * 是否符合该bean真真的类型。
+	 * <p>翻译bean的别名到标准的bean名称
+	 *  如果在当前工厂实例中无法找到该bean，则在父工厂实例中继续查找
+	 * @param name 需要检查的bean的名称。
+	 * @param targetType bean需要符合的目标类型
+	 * @return 如果参数name所代表的bean符合目标类型则<code>true</code>，否则返回<code>false</code>。
+	 * @throws NoSuchBeanDefinitionException 如果用被给的bean名称无法找到对应的bean抛出
+	 * @see #getBean
+	 * @see #getType
+	 */
+	boolean isTypeMatch(String name,Class targetType) throws NoSuchBeanDefinitionException;
+	
+	/**
+	 * 确定参数name所代表的bean的类型。具体的说，就是确定
+	 * 由{@link #getBean}方法根据名称返回的bean的具体类型。
+	 * <p>作为{@link FactoryBean},方法{@link FactoryBean#getObjectType()}
+	 * 可以返回类型，该类型是FactoryBean创造的bean的类型
+	 * <p>翻译bean的别名到标准的bean名称
+	 * 如果在当前工厂实例中无法找到该bean，则在父工厂实例中继续查找
+	 * @param name 需要检查的bean的名称。
+	 * @return bean的类型，或者当不能确定bean的类型时返回<code>null</code>
+	 * @throws NoSuchBeanDefinitionException 如果用被给的bean名称无法找到对应的bean抛出
+	 */
+	Class<?> getType(String name) throws NoSuchBeanDefinitionException;
 }
