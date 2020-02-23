@@ -21,7 +21,6 @@ public class NestedExceptionUtils {
 			if(message != null){
 				sb.append(message).append("; ");
 			}
-            //test
 			sb.append("nested exception is ").append(cause);
 			return sb.toString();
 		}
