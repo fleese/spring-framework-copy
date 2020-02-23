@@ -38,6 +38,7 @@ public class BeansException extends NestedRuntimeException {
 			return true;
 		}
 		if(!(other instanceof BeansException)){
+			//test
 			return false;
 		}
 		BeansException otherBe = (BeansException) other;
